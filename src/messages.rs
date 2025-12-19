@@ -4,8 +4,8 @@ use std::sync::OnceLock;
 use crate::client::Sendly;
 use crate::error::{Error, Result};
 use crate::models::{
-    BatchList, BatchMessageItem, BatchMessageResponse, CancelScheduledMessageResponse,
-    ListBatchesOptions, ListMessagesOptions, ListScheduledMessagesOptions, Message, MessageList,
+    BatchList, BatchMessageResponse, CancelScheduledMessageResponse, ListBatchesOptions,
+    ListMessagesOptions, ListScheduledMessagesOptions, Message, MessageList,
     ScheduleMessageRequest, ScheduledMessage, ScheduledMessageList, SendBatchRequest,
     SendMessageRequest,
 };

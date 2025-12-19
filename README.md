@@ -4,11 +4,16 @@ Official Rust SDK for the Sendly SMS API.
 
 ## Installation
 
-Add to your `Cargo.toml`:
+```bash
+# cargo
+cargo add sendly
+```
+
+Or add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sendly = "0.9"
+sendly = "0.9.5"
 tokio = { version = "1", features = ["full"] }
 ```
 
