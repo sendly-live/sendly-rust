@@ -68,7 +68,7 @@ use sendly::{Sendly, SendlyConfig};
 use std::time::Duration;
 
 let config = SendlyConfig::new()
-    .base_url("https://api.sendly.live/v1")
+    .base_url("https://sendly.live/api/v1")
     .timeout(Duration::from_secs(60))
     .max_retries(5);
 

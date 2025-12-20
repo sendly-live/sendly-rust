@@ -409,7 +409,7 @@ pub enum BatchStatus {
     /// Batch completed successfully.
     Completed,
     /// Some messages in batch failed.
-    PartiallyCompleted,
+    PartialFailure,
     /// Batch failed.
     Failed,
 }
@@ -419,7 +419,7 @@ impl std::fmt::Display for BatchStatus {
         match self {
             BatchStatus::Processing => write!(f, "processing"),
             BatchStatus::Completed => write!(f, "completed"),
-            BatchStatus::PartiallyCompleted => write!(f, "partially_completed"),
+            BatchStatus::PartialFailure => write!(f, "partial_failure"),
             BatchStatus::Failed => write!(f, "failed"),
         }
     }
