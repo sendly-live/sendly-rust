@@ -14,6 +14,7 @@
 //!     let message = client.messages().send(SendMessageRequest {
 //!         to: "+15551234567".to_string(),
 //!         text: "Hello from Sendly!".to_string(),
+//!         message_type: None,
 //!     }).await?;
 //!
 //!     println!("Message sent: {}", message.id);

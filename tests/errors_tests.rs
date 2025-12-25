@@ -27,6 +27,7 @@ async fn test_error_authentication() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -63,6 +64,7 @@ async fn test_error_authentication_with_message_field() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -98,6 +100,7 @@ async fn test_error_rate_limit_with_retry_after() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -141,6 +144,7 @@ async fn test_error_rate_limit_without_retry_after() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -178,6 +182,7 @@ async fn test_error_insufficient_credits() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -216,6 +221,7 @@ async fn test_error_validation_bad_request() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -255,6 +261,7 @@ async fn test_error_validation_unprocessable_entity() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -277,6 +284,7 @@ async fn test_error_validation_client_side_phone() {
         .send(SendMessageRequest {
             to: "invalid-phone".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -299,6 +307,7 @@ async fn test_error_validation_client_side_text() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -360,6 +369,7 @@ async fn test_error_network() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -405,6 +415,7 @@ async fn test_error_timeout() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -442,6 +453,7 @@ async fn test_error_api_500() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -485,6 +497,7 @@ async fn test_error_api_with_code() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -520,6 +533,7 @@ async fn test_error_api_fallback_message() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
+            message_type: None,
         })
         .await;
 

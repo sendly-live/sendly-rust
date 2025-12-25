@@ -46,6 +46,7 @@ impl<'a> Messages<'a> {
     /// let message = client.messages().send(SendMessageRequest {
     ///     to: "+15551234567".to_string(),
     ///     text: "Hello from Sendly!".to_string(),
+    ///     message_type: None,
     /// }).await?;
     ///
     /// println!("Sent: {}", message.id);
@@ -87,6 +88,7 @@ impl<'a> Messages<'a> {
         self.send(SendMessageRequest {
             to: to.into(),
             text: text.into(),
+            message_type: None,
         })
         .await
     }
@@ -286,6 +288,7 @@ impl<'a> Messages<'a> {
     ///     text: "Reminder: Your appointment is tomorrow!".to_string(),
     ///     scheduled_at: "2025-01-20T10:00:00Z".to_string(),
     ///     from: None,
+    ///     message_type: None,
     /// }).await?;
     ///
     /// println!("Scheduled: {}", scheduled.id);
@@ -437,6 +440,7 @@ impl<'a> Messages<'a> {
     ///         },
     ///     ],
     ///     from: None,
+    ///     message_type: None,
     /// }).await?;
     ///
     /// println!("Batch {}: {} queued", result.batch_id, result.queued);

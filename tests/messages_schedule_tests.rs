@@ -25,6 +25,7 @@ async fn test_schedule_success() {
             text: "Scheduled message".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -49,6 +50,7 @@ async fn test_schedule_invalid_phone() {
             text: "Test".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -73,6 +75,7 @@ async fn test_schedule_empty_text() {
             text: "".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -99,6 +102,7 @@ async fn test_schedule_text_too_long() {
             text: long_text,
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -123,6 +127,7 @@ async fn test_schedule_empty_scheduled_at() {
             text: "Test".to_string(),
             scheduled_at: "".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -156,6 +161,7 @@ async fn test_schedule_authentication_error() {
             text: "Test".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -184,6 +190,7 @@ async fn test_schedule_insufficient_credits() {
             text: "Test".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -217,6 +224,7 @@ async fn test_schedule_rate_limit() {
             text: "Test".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -250,6 +258,7 @@ async fn test_schedule_server_error() {
             text: "Test".to_string(),
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
+            message_type: None,
         })
         .await;
 

@@ -26,6 +26,7 @@ async fn test_send_success() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello World".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -49,6 +50,7 @@ async fn test_send_invalid_phone_format() {
         .send(SendMessageRequest {
             to: "invalid-phone".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -71,6 +73,7 @@ async fn test_send_empty_text() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -95,6 +98,7 @@ async fn test_send_text_too_long() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: long_text,
+            message_type: None,
         })
         .await;
 
@@ -119,6 +123,7 @@ async fn test_send_authentication_error() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -143,6 +148,7 @@ async fn test_send_insufficient_credits() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -167,6 +173,7 @@ async fn test_send_rate_limit() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -195,6 +202,7 @@ async fn test_send_server_error() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 
@@ -222,6 +230,7 @@ async fn test_send_network_error() {
         .send(SendMessageRequest {
             to: "+15551234567".to_string(),
             text: "Hello".to_string(),
+            message_type: None,
         })
         .await;
 

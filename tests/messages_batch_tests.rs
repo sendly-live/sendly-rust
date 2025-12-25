@@ -30,6 +30,7 @@ async fn test_send_batch_success() {
                 },
             ],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -51,6 +52,7 @@ async fn test_send_batch_empty_messages() {
         .send_batch(SendBatchRequest {
             messages: vec![],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -82,6 +84,7 @@ async fn test_send_batch_invalid_phone() {
                 },
             ],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -113,6 +116,7 @@ async fn test_send_batch_invalid_text() {
                 },
             ],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -140,6 +144,7 @@ async fn test_send_batch_text_too_long() {
                 text: long_text,
             }],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -174,6 +179,7 @@ async fn test_send_batch_authentication_error() {
                 text: "Test".to_string(),
             }],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -203,6 +209,7 @@ async fn test_send_batch_insufficient_credits() {
                 text: "Test".to_string(),
             }],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -235,6 +242,7 @@ async fn test_send_batch_not_found() {
                 text: "Test".to_string(),
             }],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -266,6 +274,7 @@ async fn test_send_batch_rate_limit() {
                 text: "Test".to_string(),
             }],
             from: None,
+            message_type: None,
         })
         .await;
 
@@ -300,6 +309,7 @@ async fn test_send_batch_server_error() {
                 text: "Test".to_string(),
             }],
             from: None,
+            message_type: None,
         })
         .await;
 

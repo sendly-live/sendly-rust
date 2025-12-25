@@ -134,6 +134,25 @@ impl Message {
     }
 }
 
+/// Message type for compliance handling.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum MessageType {
+    /// Marketing message (subject to quiet hours restrictions).
+    Marketing,
+    /// Transactional message (24/7 delivery, bypasses quiet hours).
+    Transactional,
+}
+
+impl std::fmt::Display for MessageType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            MessageType::Marketing => write!(f, "marketing"),
+            MessageType::Transactional => write!(f, "transactional"),
+        }
+    }
+}
+
 /// Request to send an SMS message.
 #[derive(Debug, Clone, Serialize)]
 pub struct SendMessageRequest {
@@ -141,6 +160,9 @@ pub struct SendMessageRequest {
     pub to: String,
     /// Message content (max 1600 characters).
     pub text: String,
+    /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
+    #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
+    pub message_type: Option<MessageType>,
 }
 
 /// Options for listing messages.
@@ -348,6 +370,9 @@ pub struct ScheduleMessageRequest {
     /// Sender ID or phone number (optional).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub from: Option<String>,
+    /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
+    #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
+    pub message_type: Option<MessageType>,
 }
 
 /// Options for listing scheduled messages.
@@ -494,6 +519,9 @@ pub struct SendBatchRequest {
     /// Sender ID or phone number (optional, applies to all).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub from: Option<String>,
+    /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
+    #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
+    pub message_type: Option<MessageType>,
 }
 
 /// Result of a single message in a batch.
