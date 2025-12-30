@@ -84,16 +84,18 @@ use sendly::{Sendly, SendMessageRequest};
 
 let client = Sendly::new("sk_live_v1_xxx");
 
-// With request struct
+// Marketing message (default)
+let message = client.messages()
+    .send_to("+15551234567", "Check out our new features!")
+    .await?;
+
+// Transactional message (bypasses quiet hours)
 let message = client.messages().send(SendMessageRequest {
     to: "+15551234567".to_string(),
-    text: "Hello from Sendly!".to_string(),
+    text: "Your verification code is: 123456".to_string(),
+    message_type: Some("transactional".to_string()),
+    ..Default::default()
 }).await?;
-
-// Convenience method
-let message = client.messages()
-    .send_to("+15551234567", "Hello!")
-    .await?;
 
 println!("ID: {}", message.id);
 println!("Status: {}", message.status);
@@ -234,11 +236,12 @@ Use test API keys (`sk_test_v1_xxx`) with these test numbers:
 
 | Number | Behavior |
 |--------|----------|
-| +15550001234 | Success |
-| +15550001001 | Invalid number |
-| +15550001002 | Carrier rejected |
-| +15550001003 | No credits |
-| +15550001004 | Rate limited |
+| +15005550000 | Success (instant) |
+| +15005550001 | Fails: invalid_number |
+| +15005550002 | Fails: unroutable_destination |
+| +15005550003 | Fails: queue_full |
+| +15005550004 | Fails: rate_limit_exceeded |
+| +15005550006 | Fails: carrier_violation |
 
 ## Features
 
