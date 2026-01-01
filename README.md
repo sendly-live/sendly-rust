@@ -141,6 +141,63 @@ println!("Status: {}", message.status);
 println!("Delivered: {:?}", message.delivered_at);
 ```
 
+### Scheduling Messages
+
+```rust
+use sendly::{Sendly, ScheduleMessageRequest};
+
+// Schedule a message for future delivery
+let scheduled = client.messages().schedule(ScheduleMessageRequest {
+    to: "+15551234567".to_string(),
+    text: "Your appointment is tomorrow!".to_string(),
+    scheduled_at: "2025-01-15T10:00:00Z".to_string(),
+    ..Default::default()
+}).await?;
+
+println!("Scheduled: {}", scheduled.id);
+println!("Will send at: {}", scheduled.scheduled_at);
+
+// List scheduled messages
+let result = client.messages().list_scheduled(None).await?;
+for msg in &result {
+    println!("{}: {}", msg.id, msg.scheduled_at);
+}
+
+// Get a specific scheduled message
+let msg = client.messages().get_scheduled("sched_xxx").await?;
+
+// Cancel a scheduled message (refunds credits)
+let result = client.messages().cancel_scheduled("sched_xxx").await?;
+println!("Refunded: {} credits", result.credits_refunded);
+```
+
+### Batch Messages
+
+```rust
+use sendly::{Sendly, SendBatchRequest, BatchMessageItem};
+
+// Send multiple messages in one API call (up to 1000)
+let batch = client.messages().send_batch(SendBatchRequest {
+    messages: vec![
+        BatchMessageItem { to: "+15551234567".into(), text: "Hello User 1!".into() },
+        BatchMessageItem { to: "+15559876543".into(), text: "Hello User 2!".into() },
+        BatchMessageItem { to: "+15551112222".into(), text: "Hello User 3!".into() },
+    ],
+    ..Default::default()
+}).await?;
+
+println!("Batch ID: {}", batch.batch_id);
+println!("Queued: {}", batch.queued);
+println!("Failed: {}", batch.failed);
+println!("Credits used: {}", batch.credits_used);
+
+// Get batch status
+let status = client.messages().get_batch("batch_xxx").await?;
+
+// List all batches
+let batches = client.messages().list_batches(None).await?;
+```
+
 ### Iterate All Messages
 
 ```rust
@@ -152,6 +209,73 @@ let mut stream = client.messages().iter(None);
 while let Some(result) = stream.next().await {
     let message = result?;
     println!("{}: {}", message.id, message.to);
+}
+```
+
+## Webhooks
+
+```rust
+use sendly::{Sendly, CreateWebhookRequest, UpdateWebhookRequest};
+
+// Create a webhook endpoint
+let webhook = client.webhooks().create(CreateWebhookRequest {
+    url: "https://example.com/webhooks/sendly".to_string(),
+    events: vec!["message.delivered".to_string(), "message.failed".to_string()],
+}).await?;
+
+println!("Webhook ID: {}", webhook.id);
+println!("Secret: {}", webhook.secret); // Store securely!
+
+// List all webhooks
+let webhooks = client.webhooks().list().await?;
+
+// Get a specific webhook
+let wh = client.webhooks().get("whk_xxx").await?;
+
+// Update a webhook
+client.webhooks().update("whk_xxx", UpdateWebhookRequest {
+    url: Some("https://new-endpoint.example.com/webhook".to_string()),
+    events: Some(vec![
+        "message.delivered".to_string(),
+        "message.failed".to_string(),
+        "message.sent".to_string(),
+    ]),
+    ..Default::default()
+}).await?;
+
+// Test a webhook
+let result = client.webhooks().test("whk_xxx").await?;
+
+// Rotate webhook secret
+let rotation = client.webhooks().rotate_secret("whk_xxx").await?;
+
+// Delete a webhook
+client.webhooks().delete("whk_xxx").await?;
+```
+
+## Account & Credits
+
+```rust
+// Get account information
+let account = client.account().get().await?;
+println!("Email: {}", account.email);
+
+// Check credit balance
+let credits = client.account().get_credits().await?;
+println!("Available: {} credits", credits.available_balance);
+println!("Reserved: {} credits", credits.reserved_balance);
+println!("Total: {} credits", credits.balance);
+
+// View credit transaction history
+let transactions = client.account().get_credit_transactions().await?;
+for tx in &transactions.data {
+    println!("{}: {} credits - {}", tx.tx_type, tx.amount, tx.description);
+}
+
+// List API keys
+let keys = client.account().list_api_keys().await?;
+for key in &keys.data {
+    println!("{}: {}*** ({})", key.name, key.prefix, key.key_type);
 }
 ```
 
