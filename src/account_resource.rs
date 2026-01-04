@@ -39,6 +39,42 @@ struct ApiKeyListResponse {
     data: Option<Vec<ApiKey>>,
 }
 
+#[derive(Debug, Deserialize)]
+struct ApiKeyResponse {
+    #[serde(default, alias = "apiKey")]
+    api_key: Option<ApiKey>,
+    #[serde(default)]
+    data: Option<ApiKey>,
+}
+
+/// Usage statistics for an API key.
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct ApiKeyUsage {
+    /// Total number of requests made with this key.
+    #[serde(default, alias = "totalRequests")]
+    pub total_requests: i64,
+    /// Number of successful requests.
+    #[serde(default, alias = "successfulRequests")]
+    pub successful_requests: i64,
+    /// Number of failed requests.
+    #[serde(default, alias = "failedRequests")]
+    pub failed_requests: i64,
+    /// Last request timestamp.
+    #[serde(default, alias = "lastRequestAt")]
+    pub last_request_at: Option<String>,
+    /// Credits used by this key.
+    #[serde(default, alias = "creditsUsed")]
+    pub credits_used: i64,
+}
+
+#[derive(Debug, Deserialize)]
+struct ApiKeyUsageResponse {
+    #[serde(default)]
+    usage: Option<ApiKeyUsage>,
+    #[serde(default)]
+    data: Option<ApiKeyUsage>,
+}
+
 impl<'a> AccountResource<'a> {
     pub(crate) fn new(client: &'a Sendly) -> Self {
         Self { client }
@@ -158,7 +194,7 @@ impl<'a> AccountResource<'a> {
     /// # }
     /// ```
     pub async fn api_keys(&self) -> Result<Vec<ApiKey>> {
-        let response = self.client.get("/account/api-keys", &[]).await?;
+        let response = self.client.get("/account/keys", &[]).await?;
         let result: ApiKeyListResponse = response.json().await?;
 
         Ok(result.api_keys.or(result.data).unwrap_or_default())
@@ -197,9 +233,61 @@ impl<'a> AccountResource<'a> {
         &self,
         request: CreateApiKeyRequest,
     ) -> Result<CreateApiKeyResponse> {
-        let response = self.client.post("/account/api-keys", &request).await?;
+        let response = self.client.post("/account/keys", &request).await?;
         let result: CreateApiKeyResponse = response.json().await?;
         Ok(result)
+    }
+
+    /// Gets a specific API key by ID.
+    ///
+    /// # Arguments
+    ///
+    /// * `id` - API key ID
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use sendly::Sendly;
+    ///
+    /// # async fn example() -> Result<(), sendly::Error> {
+    /// let client = Sendly::new("sk_live_v1_xxx");
+    ///
+    /// let key = client.account().get_api_key("key_abc123").await?;
+    /// println!("Key: {} ({})", key.name, key.prefix);
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn get_api_key(&self, id: impl AsRef<str>) -> Result<ApiKey> {
+        let path = format!("/account/keys/{}", id.as_ref());
+        let response = self.client.get(&path, &[]).await?;
+        let result: ApiKeyResponse = response.json().await?;
+        Ok(result.api_key.or(result.data).unwrap_or_default())
+    }
+
+    /// Gets usage statistics for a specific API key.
+    ///
+    /// # Arguments
+    ///
+    /// * `id` - API key ID
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use sendly::Sendly;
+    ///
+    /// # async fn example() -> Result<(), sendly::Error> {
+    /// let client = Sendly::new("sk_live_v1_xxx");
+    ///
+    /// let usage = client.account().get_api_key_usage("key_abc123").await?;
+    /// println!("Requests: {}", usage.total_requests);
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn get_api_key_usage(&self, id: impl AsRef<str>) -> Result<ApiKeyUsage> {
+        let path = format!("/account/keys/{}/usage", id.as_ref());
+        let response = self.client.get(&path, &[]).await?;
+        let result: ApiKeyUsageResponse = response.json().await?;
+        Ok(result.usage.or(result.data).unwrap_or_default())
     }
 
     /// Revokes an API key.
@@ -208,7 +296,7 @@ impl<'a> AccountResource<'a> {
     ///
     /// * `id` - API key ID
     pub async fn revoke_api_key(&self, id: impl AsRef<str>) -> Result<()> {
-        let path = format!("/account/api-keys/{}", id.as_ref());
+        let path = format!("/account/keys/{}", id.as_ref());
         self.client.delete(&path).await?;
         Ok(())
     }

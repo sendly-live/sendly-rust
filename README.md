@@ -13,7 +13,7 @@ Or add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sendly = "0.9.5"
+sendly = "3.7.0"
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -196,6 +196,17 @@ let status = client.messages().get_batch("batch_xxx").await?;
 
 // List all batches
 let batches = client.messages().list_batches(None).await?;
+
+// Preview batch (dry run) - validates without sending
+let preview = client.messages().preview_batch(SendBatchRequest {
+    messages: vec![
+        BatchMessageItem { to: "+15551234567".into(), text: "Hello User 1!".into() },
+        BatchMessageItem { to: "+447700900123".into(), text: "Hello UK!".into() },
+    ],
+    ..Default::default()
+}).await?;
+println!("Total credits needed: {}", preview.total_credits);
+println!("Valid: {}, Invalid: {}", preview.valid, preview.invalid);
 ```
 
 ### Iterate All Messages
@@ -251,6 +262,12 @@ let rotation = client.webhooks().rotate_secret("whk_xxx").await?;
 
 // Delete a webhook
 client.webhooks().delete("whk_xxx").await?;
+
+// List available webhook event types
+let event_types = client.webhooks().list_event_types().await?;
+for event_type in &event_types {
+    println!("Event: {}", event_type);
+}
 ```
 
 ## Account & Credits
@@ -277,6 +294,24 @@ let keys = client.account().list_api_keys().await?;
 for key in &keys.data {
     println!("{}: {}*** ({})", key.name, key.prefix, key.key_type);
 }
+
+// Get a specific API key
+let key = client.account().get_api_key("key_xxx").await?;
+
+// Get API key usage stats
+let usage = client.account().get_api_key_usage("key_xxx").await?;
+println!("Messages sent: {}", usage.messages_sent);
+
+// Create a new API key
+let new_key = client.account().create_api_key(CreateApiKeyRequest {
+    name: "Production Key".to_string(),
+    key_type: "live".to_string(),
+    scopes: Some(vec!["sms:send".to_string(), "sms:read".to_string()]),
+}).await?;
+println!("New key: {}", new_key.key); // Only shown once!
+
+// Revoke an API key
+client.account().revoke_api_key("key_xxx").await?;
 ```
 
 ## Error Handling

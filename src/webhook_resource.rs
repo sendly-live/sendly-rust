@@ -310,4 +310,40 @@ impl<'a> WebhooksResource<'a> {
                 created_at: None,
             }))
     }
+
+    /// Lists available webhook event types.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use sendly::Sendly;
+    ///
+    /// # async fn example() -> Result<(), sendly::Error> {
+    /// let client = Sendly::new("sk_live_v1_xxx");
+    ///
+    /// let event_types = client.webhooks().list_event_types().await?;
+    /// for event_type in event_types {
+    ///     println!("Event type: {}", event_type);
+    /// }
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn list_event_types(&self) -> Result<Vec<String>> {
+        #[derive(Debug, Deserialize)]
+        struct EventType {
+            #[serde(rename = "type")]
+            event_type: String,
+        }
+
+        #[derive(Debug, Deserialize)]
+        struct EventTypesResponse {
+            #[serde(default)]
+            events: Vec<EventType>,
+        }
+
+        let response = self.client.get("/webhooks/event-types", &[]).await?;
+        let result: EventTypesResponse = response.json().await?;
+
+        Ok(result.events.into_iter().map(|e| e.event_type).collect())
+    }
 }

@@ -586,6 +586,65 @@ impl BatchMessageResponse {
     }
 }
 
+/// A single message in a batch preview.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BatchPreviewItem {
+    /// Recipient phone number.
+    pub to: String,
+    /// Message content.
+    pub text: String,
+    /// Number of SMS segments.
+    #[serde(default = "default_segments")]
+    pub segments: i32,
+    /// Credits needed for this message.
+    #[serde(default)]
+    pub credits: i32,
+    /// Whether this message can be sent.
+    #[serde(default, alias = "canSend")]
+    pub can_send: bool,
+    /// Reason if message is blocked.
+    #[serde(default, alias = "blockReason")]
+    pub block_reason: Option<String>,
+    /// Destination country code.
+    #[serde(default)]
+    pub country: Option<String>,
+    /// Pricing tier for this message.
+    #[serde(default, alias = "pricingTier")]
+    pub pricing_tier: Option<String>,
+}
+
+/// Response from previewing a batch (dry run).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BatchPreviewResponse {
+    /// Whether the entire batch can be sent.
+    #[serde(alias = "canSend")]
+    pub can_send: bool,
+    /// Total number of messages.
+    #[serde(default, alias = "totalMessages")]
+    pub total_messages: i32,
+    /// Number of messages that will be sent.
+    #[serde(default, alias = "willSend")]
+    pub will_send: i32,
+    /// Number of messages that are blocked.
+    #[serde(default)]
+    pub blocked: i32,
+    /// Total credits needed.
+    #[serde(default, alias = "creditsNeeded")]
+    pub credits_needed: i32,
+    /// Current credit balance.
+    #[serde(default, alias = "currentBalance")]
+    pub current_balance: i32,
+    /// Whether there are enough credits.
+    #[serde(default, alias = "hasEnoughCredits")]
+    pub has_enough_credits: bool,
+    /// Preview for each message.
+    #[serde(default)]
+    pub messages: Vec<BatchPreviewItem>,
+    /// Count of block reasons.
+    #[serde(default, alias = "blockReasons")]
+    pub block_reasons: Option<std::collections::HashMap<String, i32>>,
+}
+
 /// Options for listing batches.
 #[derive(Debug, Clone, Default)]
 pub struct ListBatchesOptions {

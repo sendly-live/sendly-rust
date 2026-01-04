@@ -533,4 +533,64 @@ impl<'a> Messages<'a> {
 
         Ok(result)
     }
+
+    /// Previews a batch without sending (dry run).
+    ///
+    /// # Arguments
+    ///
+    /// * `request` - The batch send request
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use sendly::{Sendly, SendBatchRequest, BatchMessageItem};
+    ///
+    /// # async fn example() -> sendly::Result<()> {
+    /// let client = Sendly::new("sk_live_v1_xxx");
+    ///
+    /// let preview = client.messages().preview_batch(SendBatchRequest {
+    ///     messages: vec![
+    ///         BatchMessageItem {
+    ///             to: "+15551234567".to_string(),
+    ///             text: "Hello Alice!".to_string(),
+    ///         },
+    ///         BatchMessageItem {
+    ///             to: "+15559876543".to_string(),
+    ///             text: "Hello Bob!".to_string(),
+    ///         },
+    ///     ],
+    ///     from: None,
+    ///     message_type: None,
+    /// }).await?;
+    ///
+    /// println!("Can send: {}", preview.can_send);
+    /// println!("Credits needed: {}", preview.credits_needed);
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn preview_batch(&self, request: SendBatchRequest) -> Result<BatchPreviewResponse> {
+        if request.messages.is_empty() {
+            return Err(Error::Validation {
+                message: "Messages array is required".to_string(),
+            });
+        }
+
+        // Validate each message
+        for (i, msg) in request.messages.iter().enumerate() {
+            validate_phone(&msg.to).map_err(|_| Error::Validation {
+                message: format!("Invalid phone number at index {}", i),
+            })?;
+            validate_text(&msg.text).map_err(|_| Error::Validation {
+                message: format!("Invalid message text at index {}", i),
+            })?;
+        }
+
+        let response = self
+            .client
+            .post("/messages/batch/preview", &request)
+            .await?;
+        let result: BatchPreviewResponse = response.json().await?;
+
+        Ok(result)
+    }
 }
