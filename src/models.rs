@@ -12,6 +12,8 @@ pub enum MessageStatus {
     Delivered,
     /// Message delivery failed.
     Failed,
+    /// Message bounced (carrier rejected).
+    Bounced,
 }
 
 impl std::fmt::Display for MessageStatus {
@@ -21,6 +23,7 @@ impl std::fmt::Display for MessageStatus {
             MessageStatus::Sent => write!(f, "sent"),
             MessageStatus::Delivered => write!(f, "delivered"),
             MessageStatus::Failed => write!(f, "failed"),
+            MessageStatus::Bounced => write!(f, "bounced"),
         }
     }
 }
