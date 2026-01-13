@@ -200,24 +200,6 @@ impl Sendly {
         .await
     }
 
-    /// Makes a PUT request.
-    pub(crate) async fn put<T: serde::Serialize>(&self, path: &str, body: &T) -> Result<Response> {
-        self.request_with_retry(|| async {
-            let url = format!("{}{}", self.config.base_url, path);
-
-            self.client
-                .put(&url)
-                .json(body)
-                .header("Authorization", format!("Bearer {}", self.api_key))
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .header("User-Agent", format!("sendly-rs/{}", VERSION))
-                .send()
-                .await
-        })
-        .await
-    }
-
     /// Makes a DELETE request.
     pub(crate) async fn delete(&self, path: &str) -> Result<Response> {
         self.request_with_retry(|| async {
