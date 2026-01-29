@@ -70,6 +70,12 @@ pub struct CampaignPreview {
     pub estimated_credits: f64,
     #[serde(default, alias = "estimatedCost")]
     pub estimated_cost: f64,
+    #[serde(default, alias = "blockedCount")]
+    pub blocked_count: Option<i32>,
+    #[serde(default, alias = "sendableCount")]
+    pub sendable_count: Option<i32>,
+    #[serde(default)]
+    pub warnings: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize)]
