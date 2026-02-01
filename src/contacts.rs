@@ -235,6 +235,65 @@ pub struct AddContactsRequest {
     pub contact_ids: Vec<String>,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct ImportContactItem {
+    pub phone: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "optedInAt")]
+    pub opted_in_at: Option<String>,
+}
+
+impl ImportContactItem {
+    pub fn new(phone: impl Into<String>) -> Self {
+        Self {
+            phone: phone.into(),
+            name: None,
+            email: None,
+            opted_in_at: None,
+        }
+    }
+
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(name.into());
+        self
+    }
+
+    pub fn email(mut self, email: impl Into<String>) -> Self {
+        self.email = Some(email.into());
+        self
+    }
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ImportContactsRequest {
+    pub contacts: Vec<ImportContactItem>,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "listId")]
+    pub list_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "optedInAt")]
+    pub opted_in_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ImportContactsError {
+    pub index: i32,
+    pub phone: String,
+    pub error: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ImportContactsResponse {
+    pub imported: i32,
+    #[serde(rename = "skippedDuplicates")]
+    pub skipped_duplicates: i32,
+    #[serde(default)]
+    pub errors: Vec<ImportContactsError>,
+    #[serde(default, rename = "totalErrors")]
+    pub total_errors: i32,
+}
+
 pub struct ContactsResource<'a> {
     client: &'a Sendly,
 }
@@ -275,6 +334,11 @@ impl<'a> ContactsResource<'a> {
     pub async fn delete(&self, id: &str) -> Result<()> {
         self.client.delete(&format!("/contacts/{}", id)).await?;
         Ok(())
+    }
+
+    pub async fn import(&self, request: ImportContactsRequest) -> Result<ImportContactsResponse> {
+        let response = self.client.post("/contacts/import", &request).await?;
+        Ok(response.json().await?)
     }
 }
 
