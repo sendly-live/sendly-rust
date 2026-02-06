@@ -114,6 +114,9 @@ pub struct Message {
     /// Delivery timestamp (if delivered).
     #[serde(default, alias = "deliveredAt")]
     pub delivered_at: Option<String>,
+    /// Custom metadata attached to the message.
+    #[serde(default)]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 fn default_segments() -> i32 {
@@ -166,6 +169,9 @@ pub struct SendMessageRequest {
     /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
     #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
     pub message_type: Option<MessageType>,
+    /// Custom metadata to attach to the message (max 4KB).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 /// Options for listing messages.
@@ -376,6 +382,9 @@ pub struct ScheduleMessageRequest {
     /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
     #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
     pub message_type: Option<MessageType>,
+    /// Custom metadata to attach to the message (max 4KB).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 /// Options for listing scheduled messages.
@@ -512,6 +521,9 @@ pub struct BatchMessageItem {
     pub to: String,
     /// Message content (max 1600 characters).
     pub text: String,
+    /// Per-message metadata (max 4KB, merged with batch metadata).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 /// Request to send batch messages.
@@ -525,6 +537,9 @@ pub struct SendBatchRequest {
     /// Message type: "marketing" (default, subject to quiet hours) or "transactional" (24/7).
     #[serde(skip_serializing_if = "Option::is_none", rename = "messageType")]
     pub message_type: Option<MessageType>,
+    /// Shared metadata for all messages in the batch (max 4KB).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 /// Result of a single message in a batch.

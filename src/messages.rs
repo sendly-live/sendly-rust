@@ -89,6 +89,7 @@ impl<'a> Messages<'a> {
             to: to.into(),
             text: text.into(),
             message_type: None,
+            metadata: None,
         })
         .await
     }
