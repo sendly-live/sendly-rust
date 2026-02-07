@@ -23,14 +23,17 @@ async fn test_send_batch_success() {
                 BatchMessageItem {
                     to: "+15551111111".to_string(),
                     text: "Message 1".to_string(),
+                    metadata: None,
                 },
                 BatchMessageItem {
                     to: "+15552222222".to_string(),
                     text: "Message 2".to_string(),
+                    metadata: None,
                 },
             ],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -53,6 +56,7 @@ async fn test_send_batch_empty_messages() {
             messages: vec![],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -77,14 +81,17 @@ async fn test_send_batch_invalid_phone() {
                 BatchMessageItem {
                     to: "+15551111111".to_string(),
                     text: "Valid".to_string(),
+                    metadata: None,
                 },
                 BatchMessageItem {
                     to: "invalid-phone".to_string(),
                     text: "Invalid".to_string(),
+                    metadata: None,
                 },
             ],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -109,14 +116,17 @@ async fn test_send_batch_invalid_text() {
                 BatchMessageItem {
                     to: "+15551111111".to_string(),
                     text: "Valid".to_string(),
+                    metadata: None,
                 },
                 BatchMessageItem {
                     to: "+15552222222".to_string(),
                     text: "".to_string(),
+                    metadata: None,
                 },
             ],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -142,9 +152,11 @@ async fn test_send_batch_text_too_long() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: long_text,
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -177,9 +189,11 @@ async fn test_send_batch_authentication_error() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: "Test".to_string(),
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -207,9 +221,11 @@ async fn test_send_batch_insufficient_credits() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: "Test".to_string(),
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -240,9 +256,11 @@ async fn test_send_batch_not_found() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: "Test".to_string(),
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -272,9 +290,11 @@ async fn test_send_batch_rate_limit() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: "Test".to_string(),
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -307,9 +327,11 @@ async fn test_send_batch_server_error() {
             messages: vec![BatchMessageItem {
                 to: "+15551111111".to_string(),
                 text: "Test".to_string(),
+                metadata: None,
             }],
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
