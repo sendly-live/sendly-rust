@@ -47,6 +47,7 @@ impl<'a> Messages<'a> {
     ///     to: "+15551234567".to_string(),
     ///     text: "Hello from Sendly!".to_string(),
     ///     message_type: None,
+    ///     metadata: None,
     /// }).await?;
     ///
     /// println!("Sent: {}", message.id);
@@ -290,6 +291,7 @@ impl<'a> Messages<'a> {
     ///     scheduled_at: "2025-01-20T10:00:00Z".to_string(),
     ///     from: None,
     ///     message_type: None,
+    ///     metadata: None,
     /// }).await?;
     ///
     /// println!("Scheduled: {}", scheduled.id);
@@ -434,14 +436,17 @@ impl<'a> Messages<'a> {
     ///         BatchMessageItem {
     ///             to: "+15551234567".to_string(),
     ///             text: "Hello Alice!".to_string(),
+    ///             metadata: None,
     ///         },
     ///         BatchMessageItem {
     ///             to: "+15559876543".to_string(),
     ///             text: "Hello Bob!".to_string(),
+    ///             metadata: None,
     ///         },
     ///     ],
     ///     from: None,
     ///     message_type: None,
+    ///     metadata: None,
     /// }).await?;
     ///
     /// println!("Batch {}: {} queued", result.batch_id, result.queued);
@@ -554,14 +559,17 @@ impl<'a> Messages<'a> {
     ///         BatchMessageItem {
     ///             to: "+15551234567".to_string(),
     ///             text: "Hello Alice!".to_string(),
+    ///             metadata: None,
     ///         },
     ///         BatchMessageItem {
     ///             to: "+15559876543".to_string(),
     ///             text: "Hello Bob!".to_string(),
+    ///             metadata: None,
     ///         },
     ///     ],
     ///     from: None,
     ///     message_type: None,
+    ///     metadata: None,
     /// }).await?;
     ///
     /// println!("Can send: {}", preview.can_send);

@@ -15,6 +15,7 @@
 //!         to: "+15551234567".to_string(),
 //!         text: "Hello from Sendly!".to_string(),
 //!         message_type: None,
+//!         metadata: None,
 //!     }).await?;
 //!
 //!     println!("Message sent: {}", message.id);
