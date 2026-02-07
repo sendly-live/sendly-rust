@@ -28,6 +28,7 @@ async fn test_error_authentication() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -65,6 +66,7 @@ async fn test_error_authentication_with_message_field() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -101,6 +103,7 @@ async fn test_error_rate_limit_with_retry_after() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -145,6 +148,7 @@ async fn test_error_rate_limit_without_retry_after() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -183,6 +187,7 @@ async fn test_error_insufficient_credits() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -222,6 +227,7 @@ async fn test_error_validation_bad_request() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -262,6 +268,7 @@ async fn test_error_validation_unprocessable_entity() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -285,6 +292,7 @@ async fn test_error_validation_client_side_phone() {
             to: "invalid-phone".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -308,6 +316,7 @@ async fn test_error_validation_client_side_text() {
             to: "+15551234567".to_string(),
             text: "".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -370,6 +379,7 @@ async fn test_error_network() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -416,6 +426,7 @@ async fn test_error_timeout() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -454,6 +465,7 @@ async fn test_error_api_500() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -498,6 +510,7 @@ async fn test_error_api_with_code() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -534,6 +547,7 @@ async fn test_error_api_fallback_message() {
             to: "+15551234567".to_string(),
             text: "Test".to_string(),
             message_type: None,
+            metadata: None,
         })
         .await;
 

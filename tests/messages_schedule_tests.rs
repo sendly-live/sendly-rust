@@ -26,6 +26,7 @@ async fn test_schedule_success() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -51,6 +52,7 @@ async fn test_schedule_invalid_phone() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -76,6 +78,7 @@ async fn test_schedule_empty_text() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -103,6 +106,7 @@ async fn test_schedule_text_too_long() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -128,6 +132,7 @@ async fn test_schedule_empty_scheduled_at() {
             scheduled_at: "".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -162,6 +167,7 @@ async fn test_schedule_authentication_error() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -191,6 +197,7 @@ async fn test_schedule_insufficient_credits() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -225,6 +232,7 @@ async fn test_schedule_rate_limit() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
@@ -259,6 +267,7 @@ async fn test_schedule_server_error() {
             scheduled_at: "2025-01-20T10:00:00Z".to_string(),
             from: None,
             message_type: None,
+            metadata: None,
         })
         .await;
 
